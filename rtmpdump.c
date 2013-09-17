@@ -332,10 +332,10 @@ GetLastKeyframe(FILE * file,	// output file [in]
 	  return RD_FAILED;
 	}
 
-      if (prevTagSize < 0 || prevTagSize > size - 4 - 13)
+      if (prevTagSize > size - 4 - 13)
 	{
 	  RTMP_Log(RTMP_LOGERROR,
-	      "Last tag size must be greater/equal zero (prevTagSize=%d) and smaller then filesize, corrupt file!",
+	      "Last tag size must be smaller than filesize (prevTagSize=%d), corrupt file!",
 	      prevTagSize);
 	  return RD_FAILED;
 	}
@@ -395,7 +395,7 @@ GetLastKeyframe(FILE * file,	// output file [in]
   //{
   //}
 
-  if (*dSeek < 0)
+  if (*dSeek & 0x80000000)
     {
       RTMP_Log(RTMP_LOGERROR,
 	  "Last keyframe timestamp is negative, aborting, your file is corrupt!");
